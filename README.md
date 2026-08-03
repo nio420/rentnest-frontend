@@ -8,7 +8,7 @@ RentNest is a modern full-stack rental property management platform that simplif
 
 ### Frontend
 
-> https://your-frontend-url.vercel.app
+> https://rentnest-official.vercel.app/
 
 ### Backend API
 
