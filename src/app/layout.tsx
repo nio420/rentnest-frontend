@@ -15,6 +15,16 @@ export const metadata: Metadata = {
   },
   description:
     "RentNest makes renting effortless. Browse verified rental properties, submit online requests, and connect directly with trusted landlords.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.webp",
+        type: "image/webp",
+      },
+    ],
+    shortcut: "/favicon.webp",
+    apple: "/favicon.webp",
+  },
   keywords: [
     "RentNest",
     "Rental Properties",
