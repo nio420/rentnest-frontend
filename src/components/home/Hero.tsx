@@ -2,9 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/shared/Container";
-import { ArrowRight, Sparkles, ShieldCheck, Star } from "lucide-react";
+import {
+  ArrowRight,
+  Sparkles,
+  ShieldCheck,
+  Star,
+  MousePointerClick,
+} from "lucide-react";
 import FadeIn from "../shared/fade-in";
-
 
 const Hero = () => {
   return (
@@ -112,6 +117,19 @@ const Hero = () => {
                         Direct connection with owners
                       </p>
                     </div>
+                  </div>
+                </div>
+
+                {/* Interactive Floating Badge */}
+                <div className="absolute right-4 top-4 animate-[float_3s_ease-in-out_infinite] sm:right-6 sm:top-6">
+                  <div className="group flex cursor-pointer items-center gap-2 rounded-full border border-white/20 bg-background/80 px-3 py-2 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-background dark:border-white/10">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <MousePointerClick className="h-3.5 w-3.5 transition-transform duration-300 group-hover:scale-110" />
+                    </span>
+
+                    <span className="text-[11px] font-semibold text-foreground">
+                      Explore Homes
+                    </span>
                   </div>
                 </div>
               </div>

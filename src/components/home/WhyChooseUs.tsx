@@ -68,10 +68,11 @@ const WhyChooseUs = () => {
                 key={feature.title}
                 direction={feature.direction}
                 delay={0.15 * (index + 1)}
+                className="h-full"
               >
-                <div className="group relative flex flex-col rounded-xl border bg-background p-5 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
+                <div className="group relative flex h-full flex-col rounded-xl border bg-background p-5 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
                   {/* Compact Icon Badge */}
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-500 ease-out group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-sm">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-500 ease-out group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-sm shrink-0">
                     <Icon className="h-5 w-5 transition-transform duration-500 ease-out group-hover:scale-105" />
                   </div>
 
@@ -79,7 +80,7 @@ const WhyChooseUs = () => {
                     {feature.title}
                   </h3>
 
-                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground flex-1">
                     {feature.description}
                   </p>
                 </div>

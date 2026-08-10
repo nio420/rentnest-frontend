@@ -1,4 +1,5 @@
 import DashboardCard from "@/components/landlord/DashboardCard";
+import LandlordStatsChart from "@/components/shared/LandlordStatsChart";
 import { getLandlordDashboard } from "@/services/landlord/landlord.service";
 
 export default async function LandlordDashboard() {
@@ -22,6 +23,15 @@ export default async function LandlordDashboard() {
           title="Total Earnings"
           value={`৳${stats.TotalEarnings}`}
         />
+
+        {/* Spans across all 3 columns and prevents grid overflow */}
+        <div className="md:col-span-3 min-w-0">
+          <LandlordStatsChart
+            totalProperties={stats.totalProperties}
+            activeRequests={stats.activeRequests}
+            totalEarnings={stats.TotalEarnings}
+          />
+        </div>
       </div>
     </div>
   );

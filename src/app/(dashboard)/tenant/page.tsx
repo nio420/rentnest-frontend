@@ -1,4 +1,5 @@
 import Container from "@/components/shared/Container";
+import TenantRequestChart from "@/components/shared/TenantRequestChart";
 import RecentActivity from "@/components/tenant/RecentActivity";
 import { TenantPayment, TenantRequest } from "@/lib/tenantType";
 import {
@@ -8,13 +9,25 @@ import {
 
 const TenantDashboard = async () => {
   const requestsResponse = await getTenantRequests();
+  console.log("REQUESTS RESPONSE:", requestsResponse);
   const paymentsResponse = await getTenantPayments();
+  console.log("PAYMENTS RESPONSE:", paymentsResponse);
 
   const requests: TenantRequest[] = requestsResponse.data || [];
   const payments: TenantPayment[] = paymentsResponse.data || [];
 
   const approvedRequests = requests.filter(
     (item) => item.status === "APPROVED",
+  );
+
+  const pendingRequests = requests.filter((item) => item.status === "PENDING");
+
+  const rejectedRequests = requests.filter(
+    (item) => item.status === "REJECTED",
+  );
+
+  const completedRequests = requests.filter(
+    (item) => item.status === "COMPLETED",
   );
 
   const totalPayments = payments.reduce(
@@ -64,6 +77,15 @@ const TenantDashboard = async () => {
               })),
           ]}
         />
+
+        <div className="md:col-span-2">
+          <TenantRequestChart
+            pending={pendingRequests.length}
+            approved={approvedRequests.length}
+            rejected={rejectedRequests.length}
+            completed={completedRequests.length}
+          />
+        </div>
       </div>
     </Container>
   );

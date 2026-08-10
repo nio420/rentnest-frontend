@@ -1,4 +1,5 @@
 import AdminStats from "@/components/admin/AdminStats";
+import AdminStatsChart from "@/components/shared/AdminStatsChart";
 import { getAdminDashboardStats } from "@/services/admin/admin.service";
 
 const AdminDashboardPage = async () => {
@@ -21,6 +22,13 @@ const AdminDashboardPage = async () => {
       </div>
 
       <AdminStats stats={stats} />
+
+      <AdminStatsChart
+        totalUsers={stats.totalUsers}
+        totalProperties={stats.totalProperties}
+        pendingRequests={stats.pendingRequests}
+        completedRentals={stats.completedRentals}
+      />
     </section>
   );
 };

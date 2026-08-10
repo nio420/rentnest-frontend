@@ -1,5 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+import { toast } from "sonner";
+
 import Container from "@/components/shared/Container";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -38,11 +42,62 @@ const contactInfo = [
 ];
 
 const ContactPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
+
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const subject = String(formData.get("subject") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    if (!name || !email || !subject || !message) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          name,
+          email,
+          subject,
+          message,
+        },
+        {
+          publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
+        },
+      );
+
+      toast.success("Message sent successfully!");
+
+      form.reset();
+    } catch (error) {
+      console.error("EmailJS error:", error);
+
+      toast.error("Failed to send your message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section className="relative overflow-hidden py-16 md:py-24">
+    <section className="relative overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-15 lg:pb-24 ">
       {/* Background ambient lighting blur */}
-      <div className="pointer-events-none absolute -top-40 right-0 -z-10 h-125 w-125 rounded-full bg-primary/10 blur-[130px]" />
-      <div className="pointer-events-none absolute bottom-0 left-0 -z-10 h-100 w-100 rounded-full bg-primary/5 blur-[100px]" />
 
       <Container>
         {/* Header */}
@@ -113,6 +168,7 @@ const ContactPage = () => {
                   24/7 Portal Support
                 </span>
               </div>
+
               <FadeIn delay={0.5} direction="right">
                 <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
                   For urgent inquiry regarding existing rental bookings, log in
@@ -130,10 +186,12 @@ const ContactPage = () => {
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                     <MessageSquare className="h-5 w-5" />
                   </div>
+
                   <div>
                     <h2 className="text-2xl font-bold tracking-tight">
                       Send Us A Message
                     </h2>
+
                     <p className="text-sm text-muted-foreground">
                       Fill out the form below and we will respond as soon as
                       possible.
@@ -141,59 +199,87 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <form
-                  onSubmit={(e) => e.preventDefault()}
-                  className="space-y-5"
-                >
+                <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid gap-5 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-xs font-semibold text-foreground">
+                    <div className="space-y-0">
+                      <label
+                        htmlFor="name"
+                        className="block mb-2 text-xs font-semibold text-foreground"
+                      >
                         Your Name
                       </label>
+
                       <Input
+                        id="name"
+                        name="name"
                         placeholder="John Doe"
+                        required
                         className="h-11 rounded-lg border-muted bg-background/50 focus:bg-background"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-xs font-semibold text-foreground">
+                      <label
+                        htmlFor="email"
+                        className="block mb-2 text-xs font-semibold text-foreground"
+                      >
                         Your Email
                       </label>
+
                       <Input
+                        id="email"
+                        name="email"
                         type="email"
                         placeholder="john@example.com"
+                        required
                         className="h-11 rounded-lg border-muted bg-background/50 focus:bg-background"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold text-foreground">
+                    <label
+                      htmlFor="subject"
+                      className="block mb-2 text-xs font-semibold text-foreground"
+                    >
                       Subject
                     </label>
+
                     <Input
+                      id="subject"
+                      name="subject"
                       placeholder="How can we help you?"
+                      required
                       className="h-11 rounded-lg border-muted bg-background/50 focus:bg-background"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold text-foreground">
+                    <label
+                      htmlFor="message"
+                      className="block mb-2 text-xs font-semibold text-foreground"
+                    >
                       Message
                     </label>
+
                     <Textarea
+                      id="message"
+                      name="message"
                       placeholder="Write your message details here..."
+                      required
                       className="min-h-35 rounded-lg border-muted bg-background/50 p-4 focus:bg-background"
                     />
                   </div>
 
                   <Button
+                    type="submit"
                     size="lg"
+                    disabled={isSubmitting}
                     className="gap-2 px-8 font-semibold shadow-md cursor-pointer"
                   >
-                    <Send className="h-4 w-4 " />
-                    Send Message
+                    <Send className="h-4 w-4" />
+
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>

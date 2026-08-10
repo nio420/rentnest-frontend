@@ -6,7 +6,13 @@ import { cookies } from "next/headers";
 import { getRefreshToken } from "./services/auth/refreshToken";
 
 const authRoutes = ["/login", "/register"];
-const publicRoutes = ["/", "/about", "/contact", "/properties"];
+const publicRoutes = [
+  "/",
+  "/about",
+  "/contact",
+  "/properties",
+  "/auth/google-success",
+];
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
